@@ -1,0 +1,28 @@
+{% extends "admin_base.html" %}
+{% block title %}Blocked IPs{% endblock %}
+{% block content %}
+<div class="head"><div><h1>Blocked IP addresses</h1><p>Automatic bans from the brute-force rule, with progressive duration</p></div></div>
+<div class="card"><div class="scroll"><table>
+  <thead><tr><th>Source IP</th><th>Status</th><th>Reason</th><th>Blocked at (UTC)</th><th>Time left</th>
+    <th class="num">Times banned</th><th class="num">Requests denied</th><th></th></tr></thead>
+  <tbody>
+  {% for b in items %}
+    <tr>
+      <td class="ip">{{ b.ip }}</td>
+      <td>{% if b.active %}<span class="badge red">BLOCKED</span>{% else %}<span class="badge gray">RELEASED</span>{% endif %}</td>
+      <td>{{ b.reason }}</td>
+      <td class="mono muted">{{ b.blocked_at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+      <td class="mono">{{ b.remaining }}</td>
+      <td class="num">{{ b.ban_count }}</td>
+      <td class="num">{{ b.hits }}</td>
+      <td>{% if b.active %}
+        <form method="post" action="{{ url_for('admin.unblock', block_id=b.id) }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button class="unblock" type="submit">Unblock</button>
+        </form>{% endif %}</td>
+    </tr>
+  {% else %}
+    <tr><td colspan="8" class="muted">No IP has been blocked yet. An IP is blocked after repeated failed logins on the honeypot.</td></tr>
+  {% endfor %}
+  </tbody></table></div></div>
+{% endblock %}

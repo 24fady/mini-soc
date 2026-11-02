@@ -1,0 +1,18 @@
+{% extends "admin_base.html" %}
+{% block title %}Analyst sign in{% endblock %}
+{% block content %}
+<div class="gate">
+  <form class="signin" method="post" action="{{ url_for('admin.login') }}">
+    <div class="seal"><svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
+    <h1>SOC COMMAND CENTER</h1>
+    <p class="sub">Restricted operations and threat analysis portal</p>
+    {% if error %}<div class="alert" role="alert">{{ error }}</div>{% endif %}
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <div class="field"><label for="username">SOC operator ID</label>
+      <input id="username" name="username" autocomplete="username" required></div>
+    <div class="field"><label for="password">Security access key</label>
+      <input id="password" name="password" type="password" autocomplete="current-password" required></div>
+    <button class="auth" type="submit">AUTHENTICATE ANALYST</button>
+  </form>
+</div>
+{% endblock %}

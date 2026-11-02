@@ -1,0 +1,41 @@
+{% extends "admin_base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div class="head">
+  <div>
+    <h1>SOC Security Operations Center</h1>
+    <p>Live attack detection and telemetry from the login honeypot</p>
+  </div>
+  <span id="status" class="pill">Connecting</span>
+</div>
+
+<section class="kpis" aria-label="Summary">
+  <div class="kpi"><div class="label">Total logged attempts</div><div class="value" id="kpi-total">0</div></div>
+  <div class="kpi warn"><div class="label">Attempts, last hour</div><div class="value" id="kpi-hour">0</div></div>
+  <div class="kpi"><div class="label">Distinct attacking IPs</div><div class="value" id="kpi-unique">0</div></div>
+  <div class="kpi danger"><div class="label">Blocked IP addresses</div><div class="value" id="kpi-blocks">0</div></div>
+  <div class="kpi ok"><div class="label">Requests denied</div><div class="value" id="kpi-denied">0</div></div>
+</section>
+
+<section class="grid two">
+  <div class="card"><h2>Failed logins per minute, last 60 minutes</h2>
+    <div class="chart-box"><canvas id="timelineChart"></canvas></div></div>
+  <div class="card"><h2>Attacks by country</h2>
+    <div class="chart-box"><canvas id="countryChart"></canvas></div></div>
+</section>
+
+<section class="grid even">
+  <div class="card"><h2>Top attacking IPs</h2>
+    <div class="scroll"><table>
+      <thead><tr><th>Source IP</th><th>Country</th><th class="num">Attempts</th><th>Status</th></tr></thead>
+      <tbody id="top-ips"></tbody></table></div></div>
+  <div class="card"><h2>Real-time audit log, latest 20</h2>
+    <div class="scroll"><table>
+      <thead><tr><th>Time</th><th>Source IP</th><th>Country</th><th>Target username</th><th>Password tried</th><th>User agent</th></tr></thead>
+      <tbody id="recent"></tbody></table></div></div>
+</section>
+{% endblock %}
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script src="{{ url_for('static', filename='dashboard.js') }}"></script>
+{% endblock %}
